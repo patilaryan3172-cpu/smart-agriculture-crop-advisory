@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Crop Advisory System</title>
+<style>
+:root{--green:#237a45;--dark:#174b2d;--light:#f2f8f1;--gold:#f4c95d;--ink:#203126;--muted:#647368;--white:#fff;--line:#dce8dc}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:#f7faf6;line-height:1.5}
+header{background:linear-gradient(115deg,#174b2d,#2e8b50);color:#fff;padding:18px max(20px,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.15rem}.logo{width:43px;height:43px;border-radius:13px;background:#ffffff20;display:grid;place-items:center;font-size:25px}
+nav{display:flex;gap:18px;flex-wrap:wrap}nav a{color:#e9f6e9;text-decoration:none;font-size:.94rem}nav a:hover{text-decoration:underline}
+.hero{background:linear-gradient(110deg,#e7f4e5,#f8f6e8);padding:58px 20px 48px}.hero-inner{max-width:1180px;margin:auto;display:grid;grid-template-columns:1.4fr .8fr;gap:32px;align-items:center}
+.eyebrow{display:inline-block;color:var(--green);font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;background:#d6ecd6;padding:7px 11px;border-radius:99px}
+h1{font-size:clamp(2.1rem,4.5vw,3.6rem);line-height:1.08;margin:18px 0;color:#173f27;letter-spacing:-.04em}h1 span{color:var(--green)}.hero p{max-width:650px;color:#526657;font-size:1.08rem}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:750;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{background:var(--green);color:#fff}.primary:hover{background:var(--dark)}.secondary{border:1px solid #b9d4bb;color:var(--dark);background:#fff}.hero-card{background:#fff;border:1px solid #dcebd9;border-radius:22px;padding:24px;box-shadow:0 18px 45px #204b2510}.hero-card .big{font-size:2.5rem}.hero-card h3{margin:6px 0}.weatherline{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:13px;margin-top:14px;color:var(--muted)}
+main{max-width:1180px;margin:0 auto;padding:36px 20px 60px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:20px}.section-head h2{font-size:1.8rem;margin:0;color:#193f28}.section-head p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:22px;box-shadow:0 6px 18px #183e1b06}.icon{width:48px;height:48px;display:grid;place-items:center;background:#e9f5e8;border-radius:14px;font-size:25px}.card h3{margin:13px 0 7px}.card p{margin:0;color:var(--muted);font-size:.95rem}.tag{display:inline-block;margin-top:14px;padding:5px 9px;border-radius:99px;background:#edf7eb;color:#28673c;font-size:.78rem;font-weight:750}
+.advisory{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:42px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}.panel h2{margin:0 0 7px;color:#193f28}.panel .sub{color:var(--muted);margin-top:0}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{display:block;font-size:.9rem;font-weight:700;margin-bottom:6px}input,select{width:100%;border:1px solid #cbd9cc;border-radius:9px;padding:11px 12px;background:#fff;font:inherit;color:var(--ink)}input:focus,select:focus{outline:2px solid #9dd2a3;border-color:var(--green)}.full{grid-column:1/-1}
+.result{display:none;margin-top:18px;background:#edf7eb;border:1px solid #c9e4c8;border-radius:13px;padding:17px}.result h3{margin:0 0 8px;color:#205d33}.result ul{margin:8px 0 0;padding-left:20px}.result li{margin:5px 0}
+.crop-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.crop{border:1px solid var(--line);border-radius:14px;background:#fff;padding:17px}.crop .emoji{font-size:1.8rem}.crop h3{margin:5px 0}.crop p{font-size:.9rem;color:var(--muted);margin:0}
+.notice{font-size:.82rem;color:#6b776d;margin-top:12px}
+footer{background:#173f27;color:#e8f2e8;padding:28px 20px;text-align:center}footer p{margin:4px auto;max-width:780px;color:#c8ddcb;font-size:.9rem}
+@media(max-width:800px){.hero-inner,.advisory{grid-template-columns:1fr}.grid,.crop-list{grid-template-columns:1fr 1fr}.hero{padding-top:38px}}
+@media(max-width:520px){header{align-items:flex-start}.grid,.crop-list,form{grid-template-columns:1fr}.full{grid-column:auto}.hero-card{padding:19px}main{padding-top:27px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">🌱</div><div>Smart Crop Advisory<br><small style="font-weight:400;color:#d7ead9">Grow smarter. Harvest better.</small></div></div>
+  <nav><a href="#features">Features</a><a href="#advisory">Crop advisory</a><a href="#crops">Crop guide</a></nav>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Smart farming assistant</span>
+      <h1>Better decisions.<br><span>Healthier crops.</span></h1>
+      <p>Get a simple crop recommendation based on your soil, location, season and farming conditions. Plan your next step with practical guidance designed for farmers.</p>
+      <div class="actions"><a class="btn primary" href="#advisory">Get crop advice <span>→</span></a><a class="btn secondary" href="#features">Explore features</a></div>
+    </div>
+    <div class="hero-card">
+      <div class="big">🌤️ 🌾</div>
+      <h3>Your farm, at a glance</h3>
+      <p>Use local weather and soil information alongside agricultural guidance to make informed decisions.</p>
+      <div class="weatherline"><span>🌱 Soil health</span><strong>Check your soil</strong></div>
+      <div class="weatherline"><span>💧 Water planning</span><strong>Use efficiently</strong></div>
+      <div class="weatherline"><span>🧑‍🌾 Crop selection</span><strong>Match conditions</strong></div>
+    </div>
+  </div>
+</section>
+<main>
+  <section id="features">
+    <div class="section-head"><div><h2>What you can do</h2><p>Useful tools for everyday farming decisions.</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="icon">🌾</div><h3>Crop recommendations</h3><p>Compare crop options using soil type, pH, season and water availability.</p><span class="tag">Crop planning</span></article>
+      <article class="card"><div class="icon">🌦️</div><h3>Weather-aware planning</h3><p>Consider rainfall and temperature before planning sowing or irrigation.</p><span class="tag">Weather readiness</span></article>
+      <article class="card"><div class="icon">🪴</div><h3>Soil health guidance</h3><p>Record basic soil details and use a soil test to guide nutrient management.</p><span class="tag">Soil insights</span></article>
+    </div>
+  </section>
+
+  <section class="advisory" id="advisory">
+    <div class="panel">
+      <h2>Get a crop suggestion</h2>
+      <p class="sub">Enter your farm conditions to generate a sample recommendation.</p>
+      <form id="advisoryForm">
+        <div><label for="location">Location / region</label><input id="location" placeholder="e.g. Pune, Maharashtra" required></div>
+        <div><label for="season">Season</label><select id="season"><option value="Kharif">Kharif (monsoon)</option><option value="Rabi">Rabi (winter)</option><option value="Summer">Summer</option></select></div>
+        <div><label for="soil">Soil type</label><select id="soil"><option value="loamy">Loamy</option><option value="clay">Clay</option><option value="sandy">Sandy</option><option value="black">Black soil</option><option value="red">Red soil</option></select></div>
+        <div><label for="water">Water availability</label><select id="water"><option value="medium">Moderate</option><option value="high">High / irrigated</option><option value="low">Low / rain-fed</option></select></div>
+        <div><label for="ph">Soil pH (if known)</label><input id="ph" type="number" min="0" max="14" step="0.1" placeholder="e.g. 6.8"></div>
+        <div><label for="farm">Farm size (acres)</label><input id="farm" type="number" min="0" step="0.1" placeholder="e.g. 2"></div>
+        <div class="full"><button class="btn primary" type="submit" style="width:100%">Generate sample advice</button></div>
+      </form>
+      <div class="notice">This demo uses simple rules in your browser. It is not a live agronomy or weather service.</div>
+    </div>
+    <div class="panel">
+      <h2>Your advisory</h2>
+      <p class="sub">A starting point for discussion with a local agriculture officer.</p>
+      <div id="emptyState" style="padding:25px 10px;text-align:center;color:#718074"><div style="font-size:3rem">🌿</div><strong>Your recommendation will appear here</strong><p>Fill in the form and select “Generate sample advice”.</p></div>
+      <div class="result" id="result" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="crops" style="margin-top:42px">
+    <div class="section-head"><div><h2>Popular crop guide</h2><p>General examples only; suitability varies by local conditions.</p></div></div>
+    <div class="crop-list">
+      <article class="crop"><div class="emoji">🌾</div><h3>Rice</h3><p>Often grown in warm conditions with reliable water and suitable soil.</p></article>
+      <article class="crop"><div class="emoji">🌽</div><h3>Maize</h3><p>Needs good sunlight, suitable drainage and adequate moisture.</p></article>
+      <article class="crop"><div class="emoji">🫘</div><h3>Pulses</h3><p>Many varieties can improve crop rotation; avoid waterlogging for most types.</p></article>
+      <article class="crop"><div class="emoji">🌻</div><h3>Oilseeds</h3><p>Choose the variety and sowing window based on your local climate.</p></article>
+      <article class="crop"><div class="emoji">🍬</div><h3>Sugarcane</h3><p>A long-duration crop that generally needs substantial water and nutrients.</p></article>
+      <article class="crop"><div class="emoji">🥜</div><h3>Groundnut</h3><p>Usually prefers loose, well-drained soil and a locally suitable season.</p></article>
+    </div>
+  </section>
+</main>
+<footer><strong>Smart Crop Advisory System</strong><p>A student-friendly frontend demonstration for agricultural decision support.</p><p>Always confirm crop choice, fertilizer dosage and plant-protection measures with local agricultural experts and soil-test results.</p></footer>
+<script>
+const form = document.getElementById('advisoryForm');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const location = document.getElementById('location').value.trim();
+  const season = document.getElementById('season').value;
+  const soil = document.getElementById('soil').value;
+  const water = document.getElementById('water').value;
+  const phText = document.getElementById('ph').value;
+  const ph = phText === '' ? null : Number(phText);
+  let crops = [];
+  if (season === 'Kharif') crops = water === 'high' ? ['Rice (where water and climate suit)', 'Maize', 'Soybean'] : ['Maize', 'Pulses', 'Millets'];
+  else if (season === 'Rabi') crops = ['Wheat (where locally suitable)', 'Chickpea', 'Mustard'];
+  else crops = water === 'high' ? ['Vegetables (locally suitable varieties)', 'Maize', 'Groundnut'] : ['Millets', 'Pulses', 'Groundnut'];
+  if (soil === 'black') crops.unshift('Cotton (check local season and rainfall)');
+  if (soil === 'sandy') crops = ['Groundnut', 'Millets', 'Pulses'];
+  let tips = [];
+  if (water === 'low') tips.push('Prefer locally recommended drought-tolerant varieties and conserve soil moisture.');
+  if (water === 'high') tips.push('Plan drainage and irrigation carefully; avoid unnecessary waterlogging.');
+  if (soil === 'clay') tips.push('Check drainage before sowing and avoid working the soil when it is too wet.');
+  if (soil === 'sandy') tips.push('Organic matter and split nutrient applications may help improve water retention.');
+  if (ph !== null) {
+    if (ph < 5.5) tips.push('Your entered pH is acidic; confirm with a soil test before considering amendments.');
+    else if (ph > 7.8) tips.push('Your entered pH is alkaline; ask a soil-testing lab or agriculture officer for crop-specific guidance.');
+    else tips.push('Use the soil-test report to confirm nutrient needs; pH alone is not enough to choose a crop.');
+  } else tips.push('Get a soil test for pH and nutrients before applying fertilizer.');
+  const uniqueCrops = [...new Set(crops)].slice(0, 4);
+  document.getElementById('emptyState').style.display = 'none';
+  const result = document.getElementById('result');
+  result.style.display = 'block';
+  result.innerHTML = `<h3>🌱 Sample advisory for ${escapeHtml(location)}</h3>
+    <p><strong>Season:</strong> ${season} &nbsp; | &nbsp; <strong>Soil:</strong> ${soil} &nbsp; | &nbsp; <strong>Water:</strong> ${water}</p>
+    <p><strong>Options to investigate:</strong></p><ul>${uniqueCrops.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
+    <p><strong>Suggested next steps:</strong></p><ul>${tips.map(t => `<li>${escapeHtml(t)}</li>`).join('')}<li>Check local sowing dates, seed availability and current advisories before planting.</li></ul>
+    <p class="notice">Illustrative guidance only—not a guaranteed crop prediction. Confirm with local agricultural experts.</p>`;
+});
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+</script>
+</body>
+</html>
